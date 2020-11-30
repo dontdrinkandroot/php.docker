@@ -1,0 +1,9 @@
+sudo: required
+
+services:
+    - docker
+
+script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker build -t dontdrinkandroot/php:$TRAVIS_BRANCH.common -f common.Dockerfile .
+    - docker push dontdrinkandroot/php:$TRAVIS_BRANCH.common
