@@ -30,8 +30,6 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         php7.4-intl \
         php7.4-redis \
         php7.4-pcov \
-        librsvg2-bin \
-        fonts-ubuntu \
         npm \
         yarn\
     && echo "zend.assertions=1" >> /etc/php/7.4/mods-available/assertions.ini \
