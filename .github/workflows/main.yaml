@@ -27,4 +27,4 @@ jobs:
                 with:
                     file: ./common.Dockerfile
                     push: true
-                    tags: dontdrinkandroot/php:${{GITHUB_REF##*/}}-common
+                    tags: dontdrinkandroot/php:${{ GITHUB_REF##*/ }}-common
