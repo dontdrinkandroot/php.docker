@@ -32,8 +32,5 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         php7.4-pcov \
         npm \
         yarn\
-    && echo "zend.assertions=1" >> /etc/php/7.4/mods-available/assertions.ini \
-    && echo "assert.exception=1" >> /etc/php/7.4/mods-available/assertions.ini \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && phpenmod assertions \
     && apt-get clean
