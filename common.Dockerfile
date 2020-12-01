@@ -12,6 +12,9 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         ca-certificates \
         git \
         unzip \
+    # Add PHP PPA
+    && echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu focal main" > /etc/apt/sources.list.d/ondrej-php.list \
+    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E5267A6C \
     # Add Yarn sources
     && curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
@@ -19,17 +22,16 @@ RUN echo "Europe/Berlin" > /etc/timezone \
     && apt-get update \
     # Install Deps
     && apt install -qy --no-install-recommends \
-        php7.4-cli \
-        php7.4-xml \
-        php7.4-sqlite3 \
-        php7.4-mysql \
-        php7.4-zip \
-        php7.4-mbstring \
-        php7.4-curl \
-        php7.4-gd \
-        php7.4-intl \
-        php7.4-redis \
-        php7.4-pcov \
+        php8.0-cli \
+        php8.0-xml \
+        php8.0-sqlite3 \
+        php8.0-mysql \
+        php8.0-zip \
+        php8.0-mbstring \
+        php8.0-curl \
+        php8.0-gd \
+        php8.0-intl \
+        php8.0-redis \
         npm \
         yarn\
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
