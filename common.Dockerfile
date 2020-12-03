@@ -30,7 +30,9 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         php7.4-intl \
         php7.4-redis \
         php7.4-pcov \
+        php7.4-apcu \
         npm \
         yarn\
+    && echo "apc.enable=1" >> /etc/php/7.4/mods-available/apcu.ini \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && apt-get clean
