@@ -33,6 +33,7 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         php8.0-gd \
         php8.0-intl \
         php8.0-redis \
+        php8.0-apcu \
         npm \
         yarn\
     && echo "apc.enable=1" >> /etc/php/8.0/mods-available/apcu.ini \
