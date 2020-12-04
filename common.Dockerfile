@@ -26,6 +26,7 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         php8.0-xml \
         php8.0-sqlite3 \
         php8.0-mysql \
+        php8.0-pgsql \
         php8.0-zip \
         php8.0-mbstring \
         php8.0-curl \
@@ -34,5 +35,7 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         php8.0-redis \
         npm \
         yarn\
+    && echo "apc.enable=1" >> /etc/php/8.0/mods-available/apcu.ini \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && apt-get clean
+    && apt-get clean \
+    && php -i
