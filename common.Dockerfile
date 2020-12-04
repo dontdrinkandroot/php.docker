@@ -23,13 +23,13 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         php7.4-xml \
         php7.4-sqlite3 \
         php7.4-mysql \
+        php7.4-pgsql \
         php7.4-zip \
         php7.4-mbstring \
         php7.4-curl \
         php7.4-gd \
         php7.4-intl \
         php7.4-redis \
-        php7.4-pcov \
         php7.4-apcu \
         npm \
         yarn\
