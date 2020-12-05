@@ -34,5 +34,6 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         npm \
         yarn\
     && echo "apc.enable=1" >> /etc/php/7.4/mods-available/apcu.ini \
+    && echo "memory_limit = 2G" >> /etc/php/7.4/mods-available/memory_limit.ini \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && apt-get clean
