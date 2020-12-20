@@ -31,6 +31,7 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         php7.4-intl \
         php7.4-redis \
         php7.4-apcu \
+        php7.4-bcmath \
         npm \
         yarn\
     && echo "apc.enable=1" >> /etc/php/7.4/mods-available/apcu.ini \
