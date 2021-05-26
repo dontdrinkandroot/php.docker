@@ -12,6 +12,8 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         ca-certificates \
         git \
         unzip \
+    # Add NPM sources
+    && curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
     # Add Yarn sources
     && curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
@@ -32,7 +34,7 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         php7.4-redis \
         php7.4-apcu \
         php7.4-bcmath \
-        npm \
+        nodejs \
         yarn\
     && echo "apc.enable=1" >> /etc/php/7.4/mods-available/apcu.ini \
     && echo "memory_limit = 2G" >> /etc/php/7.4/mods-available/custom_settings.ini \
