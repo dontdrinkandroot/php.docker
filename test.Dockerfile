@@ -9,5 +9,5 @@ RUN apt install -qy --no-install-recommends \
     && echo "zend.assertions=1" >> /etc/php/8.0/mods-available/assertions.ini \
     && echo "assert.exception=1" >> /etc/php/8.0/mods-available/assertions.ini \
     && phpenmod assertions \
-    && apt-get clean \
-    && php -i
+    && apt clean \
+    && apt autoremove -qy
