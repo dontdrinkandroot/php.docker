@@ -9,5 +9,9 @@ RUN apt install -qy --no-install-recommends \
     && echo "zend.assertions=1" >> /etc/php/8.0/mods-available/assertions.ini \
     && echo "assert.exception=1" >> /etc/php/8.0/mods-available/assertions.ini \
     && phpenmod assertions \
-    && apt clean \
+    && echo "##### INSTALL PSALM #####" \
+    && curl -sL https://github.com/vimeo/psalm/releases/latest/download/psalm.phar > /usr/local/bin/psalm \
+    && chmod +x /usr/local/bin/psalm \
+    && echo "##### CLEANUP #####" \
+    && apt-get clean \
     && apt autoremove -qy
