@@ -33,22 +33,22 @@ jobs:
                 with:
                     file: ./common.Dockerfile
                     push: true
-                    tags: dontdrinkandroot/php/${{ steps.vars.outputs.short_ref }}/common:latest
+                    tags: dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-common
             -
                 name: Build and push test
                 uses: docker/build-push-action@v2
                 with:
                     file: ./test.Dockerfile
                     push: true
-                    tags: dontdrinkandroot/php/${{ steps.vars.outputs.short_ref }}/test:latest
+                    tags: dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-test
                     build-args: |
-                        FROM=dontdrinkandroot/php/${{ steps.vars.outputs.short_ref }}/common:latest
+                        FROM=dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-common
             -
                 name: Build and push dev
                 uses: docker/build-push-action@v2
                 with:
                     file: ./dev.Dockerfile
                     push: true
-                    tags: dontdrinkandroot/php/${{ steps.vars.outputs.short_ref }}/dev:latest
+                    tags: dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-dev
                     build-args: |
-                        FROM=dontdrinkandroot/php/${{ steps.vars.outputs.short_ref }}/test:latest
+                        FROM=dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-test
