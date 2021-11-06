@@ -3,7 +3,6 @@ FROM $FROM
 MAINTAINER Philip Washington Sorst <philip@sorst.net>
 
 RUN apt install -qy --no-install-recommends \
-        php7.4-pcov \
         php7.4-xdebug \
         php7.4-pcov \
     && echo "xdebug.remote_enable=1" >> /etc/php/7.4/mods-available/xdebug.ini \
