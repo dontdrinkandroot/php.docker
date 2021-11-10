@@ -37,6 +37,7 @@ RUN echo "Europe/Berlin" > /etc/timezone \
         nodejs \
         yarn\
     && echo "apc.enable=1" >> /etc/php/7.4/mods-available/apcu.ini \
+    && echo "apc.enable_cli=1" >> /etc/php/7.4/mods-available/apcu.ini \
     && echo "memory_limit = 2G" >> /etc/php/7.4/mods-available/custom_settings.ini \
     && echo "max_execution_time = 120" >> /etc/php/7.4/mods-available/custom_settings.ini \
     && phpenmod custom_settings \
