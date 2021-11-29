@@ -26,22 +26,22 @@ RUN echo "##### SET TIMEZONE #####" \
     && apt-get update \
     && echo "##### INSTALL PACKAGES #####" \
     && apt install -qy --no-install-recommends \
-        php8.0-cli \
-        php8.0-xml \
-        php8.0-sqlite3 \
-        php8.0-mysql \
-        php8.0-pgsql \
-        php8.0-zip \
-        php8.0-mbstring \
-        php8.0-curl \
-        php8.0-gd \
-        php8.0-intl \
-        php8.0-redis \
-        php8.0-apcu \
+        php8.1-cli \
+        php8.1-xml \
+        php8.1-sqlite3 \
+        php8.1-mysql \
+        php8.1-pgsql \
+        php8.1-zip \
+        php8.1-mbstring \
+        php8.1-curl \
+        php8.1-gd \
+        php8.1-intl \
+        php8.1-redis \
+        php8.1-apcu \
         nodejs \
         yarn\
     && echo "##### CUSTOMIZING PHP CONFIG #####" \
-    && echo "apc.enable=1" >> /etc/php/8.0/mods-available/apcu.ini \
+    && echo "apc.enable=1" >> /etc/php/8.1/mods-available/apcu.ini \
     && echo "##### INSTALL COMPOSER #####" \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && echo "##### CLEANUP #####" \
