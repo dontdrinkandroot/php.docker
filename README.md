@@ -1,7 +1,7 @@
 php.docker
 ==========
 
-* Ubuntu 20.04
-* PHP 8
+* Ubuntu 22.04
+* PHP 8.1
 * Yarn
 * Apache
