@@ -17,8 +17,8 @@ RUN echo "##### SET TIMEZONE #####" \
 #    && echo "##### ADD PHP SOURCES #####" \
 #    && echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu focal main" > /etc/apt/sources.list.d/ondrej-php.list \
 #    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E5267A6C \
-#    && echo "##### ADD NPM SOURCES #####" \
-#    && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && echo "##### ADD NPM SOURCES #####" \
+    && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
     && echo "##### ADD YARN SOURCES #####" \
     && curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
@@ -38,8 +38,7 @@ RUN echo "##### SET TIMEZONE #####" \
         php8.1-intl \
         php8.1-redis \
         php8.1-apcu \
-#        nodejs \
-        npm \
+        nodejs \
         yarn\
     && echo "##### CUSTOMIZING PHP CONFIG #####" \
     && echo "apc.enable=1" >> /etc/php/8.1/mods-available/apcu.ini \
