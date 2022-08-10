@@ -13,12 +13,17 @@ RUN echo "##### SETUP APACHE #####" \
     && a2enconf errorlog \
     && apt-get clean \
     && apt autoremove -qy \
-    && echo "##### OPTIMIZE PHP #####" \
+    && echo "##### CONFIGURE UPLOADS #####" \
+    && echo "; priority=50" >> /etc/php/8.1/mods-available/uploads.ini \
+    && echo "upload_max_filesize = 128M" >> /etc/php/8.1/mods-available/uploads.ini \
+    && echo "post_max_size = 128M" >> /etc/php/8.1/mods-available/uploads.ini \
+    && phpenmod -s apache2 uploads \
+    && echo "##### OPTIMIZE SYMFONY #####" \
     && echo "; priority=50" >> /etc/php/8.1/mods-available/symfony_performance.ini \
     && echo "opcache.memory_consumption=256" >> /etc/php/8.1/mods-available/symfony_performance.ini \
     && echo "opcache.max_accelerated_files=20000" >> /etc/php/8.1/mods-available/symfony_performance.ini \
     && echo "opcache.validate_timestamps=0" >> /etc/php/8.1/mods-available/symfony_performance.ini \
-    && echo "realpath_cache_size=4096K" >> /etc/php/8.1/mods-ava    ilable/symfony_performance.ini \
+    && echo "realpath_cache_size=4096K" >> /etc/php/8.1/mods-available/symfony_performance.ini \
     && echo "realpath_cache_ttl=600" >> /etc/php/8.1/mods-available/symfony_performance.ini \
     && echo "opcache.preload=/var/www/config/preload.php" >> /etc/php/8.1/mods-available/symfony_performance.ini \
     && echo "opcache.preload_user=www-data" >> /etc/php/8.1/mods-available/symfony_performance.ini \
