@@ -23,6 +23,7 @@ RUN echo "##### INSTALL DEPENDENCIES #####" \
         php81-session \
         php81-tokenizer \
         php81-xml \
+        php81-xmlwriter\
     && ln -sf /usr/bin/php81 /usr/bin/php \
     && echo "##### INSTALL COMPOSER #####" \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
