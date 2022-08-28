@@ -2,34 +2,37 @@ ARG FROM=""
 FROM $FROM
 MAINTAINER Philip Washington Sorst <philip@sorst.net>
 
-RUN echo "##### SETUP APACHE #####" \
-    && apt install -qy --no-install-recommends \
+RUN echo "INSTALL DEPENDENCIES " \
+    && apk --no-cache --update add \
         apache2 \
-        libapache2-mod-php8.1 \
-    && a2enmod rewrite headers \
-    && rm -rf /var/www/html \
-    && chown -R www-data:www-data /var/www \
-    && echo "ErrorLog /dev/stderr" > /etc/apache2/conf-available/errorlog.conf \
-    && a2enconf errorlog \
-    && apt-get clean \
-    && apt autoremove -qy \
+        php81-apache2 \
+        php81-pecl-apcu \
     && echo "##### CONFIGURE UPLOADS #####" \
-    && echo "; priority=50" >> /etc/php/8.1/mods-available/uploads.ini \
-    && echo "upload_max_filesize = 128M" >> /etc/php/8.1/mods-available/uploads.ini \
-    && echo "post_max_size = 128M" >> /etc/php/8.1/mods-available/uploads.ini \
-    && phpenmod -s apache2 uploads \
+    && echo "; priority=50" >> /etc/php81/conf.d/03_uploads.ini \
+    && echo "upload_max_filesize = 128M" >> /etc/php81/conf.d/03_uploads.ini \
+    && echo "post_max_size = 128M" >> /etc/php81/conf.d/03_uploads.ini \
     && echo "##### OPTIMIZE SYMFONY #####" \
-    && echo "; priority=50" >> /etc/php/8.1/mods-available/symfony_performance.ini \
-    && echo "opcache.memory_consumption=256" >> /etc/php/8.1/mods-available/symfony_performance.ini \
-    && echo "opcache.max_accelerated_files=20000" >> /etc/php/8.1/mods-available/symfony_performance.ini \
-    && echo "opcache.validate_timestamps=0" >> /etc/php/8.1/mods-available/symfony_performance.ini \
-    && echo "realpath_cache_size=4096K" >> /etc/php/8.1/mods-available/symfony_performance.ini \
-    && echo "realpath_cache_ttl=600" >> /etc/php/8.1/mods-available/symfony_performance.ini \
-    && echo "opcache.preload=/var/www/config/preload.php" >> /etc/php/8.1/mods-available/symfony_performance.ini \
-    && echo "opcache.preload_user=www-data" >> /etc/php/8.1/mods-available/symfony_performance.ini \
-    && phpenmod -s apache2 symfony_performance
+    && echo "; priority=50" >> /etc/php81/conf.d/04_symfony_performance.ini \
+    && echo "opcache.memory_consumption=256" >> /etc/php81/conf.d/04_symfony_performance.ini \
+    && echo "opcache.max_accelerated_files=20000" >> /etc/php81/conf.d/04_symfony_performance.ini \
+    && echo "opcache.validate_timestamps=0" >> /etc/php81/conf.d/04_symfony_performance.ini \
+    && echo "realpath_cache_size=4096K" >> /etc/php81/conf.d/04_symfony_performance.ini \
+    && echo "realpath_cache_ttl=600" >> /etc/php81/conf.d/04_symfony_performance.ini \
+    && echo "opcache.preload=/var/www/config/preload.php" >> /etc/php81/conf.d/04_symfony_performance.ini \
+    && echo "opcache.preload_user=www-data" >> /etc/php81/conf.d/04_symfony_performance.ini \
+    && echo "##### CONFIGURE APACHE #####" \
+    && sed -i 's/#LoadModule\ rewrite_module/LoadModule\ rewrite_module/' /etc/apache2/httpd.conf \
+    && sed -i 's/#LoadModule\ expires_module/LoadModule\ expires_module/' /etc/apache2/httpd.conf \
+    && sed -i 's/User apache/User www-data/' /etc/apache2/httpd.conf \
+    && sed -i 's/Group apache/Group www-data/' /etc/apache2/httpd.conf \
+    && deluser xfs \
+    && delgroup www-data \
+    && addgroup -g 33 -S www-data \
+    && adduser -u 33 -D -S www-data -G www-data \
+    && mkdir -p /opt/app/ \
+    && chown www-data:www-data /opt/app
 
-WORKDIR /var/www/
+WORKDIR /opt/app/
 
-CMD ["apachectl", "-D", "FOREGROUND"]
+CMD ["httpd", "-D", "FOREGROUND"]
 EXPOSE 80
