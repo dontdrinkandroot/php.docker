@@ -10,6 +10,7 @@ RUN echo "##### INSTALL DEPENDENCIES #####" \
         php81-ctype \
         php81-curl \
         php81-dom \
+        php81-exif \
         php81-fileinfo \
         php81-gd \
         php81-iconv \
