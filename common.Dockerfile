@@ -11,6 +11,7 @@ RUN echo "##### INSTALL DEPENDENCIES #####" \
         php81-curl \
         php81-dom \
         php81-iconv \
+        php81-intl \
         php81-mbstring \
         php81-openssl \
         php81-zip \
