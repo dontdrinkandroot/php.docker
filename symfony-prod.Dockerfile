@@ -28,7 +28,7 @@ RUN echo "INSTALL DEPENDENCIES " \
     && addgroup -g 33 -S www-data \
     && adduser -u 33 -D -S www-data -G www-data \
     && mkdir -p /opt/app/ \
-    && chown www-data:www-data /opt/app
+    && chown www-data:www-data /opt/app/
 
 COPY apache/vhost-symfony-prod.conf /etc/apache2/conf.d/vhost.conf
 

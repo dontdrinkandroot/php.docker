@@ -44,20 +44,20 @@ jobs:
                     build-args: |
                         FROM=dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-common
             -
-                name: Build and push dev
+                name: Build and push symfony-dev
                 uses: docker/build-push-action@v2
                 with:
-                    file: ./dev.Dockerfile
+                    file: ./symfony-dev.Dockerfile
                     push: true
-                    tags: dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-dev
+                    tags: dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-symfony-dev
                     build-args: |
                         FROM=dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-test
             -
-                name: Build and push symfony
+                name: Build and push symfony-prod
                 uses: docker/build-push-action@v2
                 with:
-                    file: ./symfony.Dockerfile
+                    file: ./symfony-prod.Dockerfile
                     push: true
-                    tags: dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-symfony
+                    tags: dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-symfony-prod
                     build-args: |
                         FROM=dontdrinkandroot/php:${{ steps.vars.outputs.short_ref }}-common
