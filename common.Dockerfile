@@ -1,7 +1,7 @@
 FROM alpine:3.16
 MAINTAINER Philip Washington Sorst <philip@sorst.net>
 
-RUN echo "##### INSTALL DEPENDENCIES #####" \
+RUN set -xe \
     && apk --no-cache --update add \
         curl \
         git \
@@ -29,14 +29,11 @@ RUN echo "##### INSTALL DEPENDENCIES #####" \
         php81-xml \
         php81-xmlwriter\
     && ln -sf /usr/bin/php81 /usr/bin/php \
-    && echo "##### INSTALL COMPOSER #####" \
+    && echo "Europe/Berlin" > /etc/timezone \
+    && cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
+    && apk del tzdata \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && echo "##### SHOW VERSIONS #####" \
     && echo "git:" && git --version \
     && echo "php:" && php -v \
     && echo "composer:" && composer --version \
-    && echo "php modules" && php -m \
-    && echo "##### SET TIMEZONE #####" \
-    && echo "Europe/Berlin" > /etc/timezone \
-    && cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
-    && apk del tzdata
+    && echo "php modules" && php -m
