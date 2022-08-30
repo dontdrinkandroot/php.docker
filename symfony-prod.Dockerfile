@@ -24,7 +24,7 @@ COPY apache/vhost-symfony-prod.conf /etc/apache2/conf.d/vhost.conf
 COPY php/uploads.ini /etc/php81/conf.d/05_uploads.ini
 COPY php/symfony.ini /etc/php81/conf.d/05_symfony.ini
 
-HEALTHCHECK CMD wget -q --no-cache --spider localhost
+#HEALTHCHECK CMD wget -q --no-cache --spider localhost
 
 WORKDIR /var/www/
 
