@@ -6,6 +6,7 @@ RUN set -xe \
         curl \
         git \
         tzdata \
+        icu-data-full \
         php81 \
         php81-ctype \
         php81-curl \
