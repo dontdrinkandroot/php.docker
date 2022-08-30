@@ -15,7 +15,9 @@ RUN set -xe \
     && adduser -u 33 -D -S www-data -G www-data \
     && rm -rf /var/www \
     && mkdir -p /var/www/ \
-    && chown www-data:www-data /var/www/
+    && chown www-data:www-data /var/www/ \
+    && mkdir -p /var/log/app/ \
+    && chown www-data:www-data /var/log/app/
 
 COPY apache/httpd.conf /etc/apache2/httpd.conf
 COPY apache/vhost-symfony-prod.conf /etc/apache2/conf.d/vhost.conf
