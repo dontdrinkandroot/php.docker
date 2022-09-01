@@ -19,6 +19,7 @@ RUN set -xe \
         php81-mbstring \
         php81-openssl \
         php81-zip \
+        php81-opcache \
         php81-pdo_mysql \
         php81-pdo_pgsql \
         php81-pdo_sqlite \
