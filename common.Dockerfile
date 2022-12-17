@@ -1,5 +1,7 @@
-FROM alpine:3.16
+FROM alpine:edge
 MAINTAINER Philip Washington Sorst <philip@sorst.net>
+
+ENV COMPOSER_HOME="/opt/composer"
 
 RUN set -xe \
     && apk --no-cache --update add \
@@ -7,35 +9,35 @@ RUN set -xe \
         git \
         tzdata \
         icu-data-full \
-        php81 \
-        php81-ctype \
-        php81-curl \
-        php81-dom \
-        php81-exif \
-        php81-fileinfo \
-        php81-gd \
-        php81-iconv \
-        php81-intl \
-        php81-mbstring \
-        php81-openssl \
-        php81-zip \
-        php81-opcache \
-        php81-pdo_mysql \
-        php81-pdo_pgsql \
-        php81-pdo_sqlite \
-        php81-phar \
-        php81-simplexml \
-        php81-sodium \
-        php81-session \
-        php81-tokenizer \
-        php81-xml \
-        php81-xmlwriter\
-    && ln -sf /usr/bin/php81 /usr/bin/php \
+        php82 \
+        php82-ctype \
+        php82-curl \
+        php82-dom \
+        php82-exif \
+        php82-fileinfo \
+        php82-gd \
+        php82-iconv \
+        php82-intl \
+        php82-mbstring \
+        php82-openssl \
+        php82-zip \
+        php82-opcache \
+        php82-pdo_mysql \
+        php82-pdo_pgsql \
+        php82-pdo_sqlite \
+        php82-phar \
+        php82-simplexml \
+        php82-sodium \
+        php82-session \
+        php82-tokenizer \
+        php82-xml \
+        php82-xmlwriter\
+    && ln -sf /usr/bin/php82 /usr/bin/php \
     && echo "Europe/Berlin" > /etc/timezone \
     && cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
     && apk del tzdata \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && echo "git:" && git --version \
-    && echo "php:" && php -v \
-    && echo "composer:" && composer --version \
-    && echo "php modules" && php -m
+    && git --version \
+    && php -v \
+    && composer --version \
+    && php -m

@@ -5,7 +5,7 @@ MAINTAINER Philip Washington Sorst <philip@sorst.net>
 RUN set -xe \
     && apk --no-cache --update add \
         apache2 \
-        php81-apache2 \
+        php82-apache2 \
     && ln -sf /run/apache2 /etc/apache2/run \
     && ln -sf /usr/lib/apache2 /etc/apache2/modules \
     && deluser xfs \
@@ -18,7 +18,7 @@ RUN set -xe \
 
 COPY apache/httpd.conf /etc/apache2/httpd.conf
 COPY apache/vhost-symfony-dev.conf /etc/apache2/conf.d/vhost.conf
-COPY php/uploads.ini /etc/php81/conf.d/05_uploads.ini
+COPY php/uploads.ini /etc/php82/conf.d/05_uploads.ini
 
 WORKDIR /var/www/
 
