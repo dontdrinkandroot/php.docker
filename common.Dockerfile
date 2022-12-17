@@ -1,5 +1,7 @@
-FROM alpine:3.16
+FROM alpine:3.17
 MAINTAINER Philip Washington Sorst <philip@sorst.net>
+
+ENV COMPOSER_HOME="/opt/composer"
 
 RUN set -xe \
     && apk --no-cache --update add \
@@ -35,7 +37,7 @@ RUN set -xe \
     && cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
     && apk del tzdata \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && echo "git:" && git --version \
-    && echo "php:" && php -v \
-    && echo "composer:" && composer --version \
-    && echo "php modules" && php -m
+    && git --version \
+    && php -v \
+    && composer --version \
+    && php -m
