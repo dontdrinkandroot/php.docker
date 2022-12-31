@@ -25,6 +25,7 @@ RUN set -xe \
         php81-pdo_mysql \
         php81-pdo_pgsql \
         php81-pdo_sqlite \
+        php81-pecl-apcu \
         php81-phar \
         php81-simplexml \
         php81-sodium \
