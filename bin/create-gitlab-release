@@ -1,0 +1,103 @@
+#!/usr/bin/php
+<?php
+
+function getCommitMessages(): string|null
+{
+    $lastTag = trim(shell_exec("git describe --tags --abbrev=0 --match 'v*'"));
+    if ('' === $lastTag) {
+        echo "Last tag: none\n";
+        $commitMessages = shell_exec("git log --pretty=format:'%s' --root");
+    } else {
+        echo "Last tag: $lastTag\n";
+        $commitMessages = shell_exec("git log --pretty=format:'%s' $lastTag..HEAD");
+    }
+    if (false === $commitMessages) {
+        return null;
+    }
+    return $commitMessages;
+}
+
+function createTag(string $projectId, string $tagName, string $commitBranch, string $privateToken): void
+{
+    echo "Creating Tag: $tagName\n";
+    $curlHandle = curl_init();
+    $url = "https://gitlab.com/api/v4/projects/$projectId/repository/tags?tag_name=$tagName&ref=$commitBranch";
+    curl_setopt(
+        $curlHandle,
+        CURLOPT_URL,
+        $url
+    );
+    curl_setopt($curlHandle, CURLOPT_POST, 1);
+    curl_setopt($curlHandle, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: $privateToken"]);
+    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curlHandle);
+    $httpCode = (int)curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+    curl_close($curlHandle);
+    if (201 !== $httpCode) {
+        echo "Failed to create tag $tagName, code $httpCode\n";
+        exit(1);
+    }
+    echo "Tag created\n";
+}
+
+function createRelease(string $projectId, string $privateToken, string $tagName, string $commitMessages): void
+{
+    echo "Creating Release: $tagName\n";
+    $lines = explode("\n", $commitMessages);
+    $markdownCommitMessages = '';
+    foreach ($lines as $line) {
+        $markdownCommitMessages .= "* $line\n";
+    }
+
+    $curlHandle = curl_init();
+    curl_setopt($curlHandle, CURLOPT_URL, "https://gitlab.com/api/v4/projects/$projectId/releases");
+    curl_setopt($curlHandle, CURLOPT_POST, 1);
+    curl_setopt($curlHandle, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: $privateToken", "Content-Type: application/json"]);
+    curl_setopt(
+        $curlHandle,
+        CURLOPT_POSTFIELDS,
+        json_encode(
+            ["name" => $tagName, "tag_name" => $tagName, "description" => $markdownCommitMessages]
+        )
+    );
+    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curlHandle);
+    $httpCode = (int)curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+    curl_close($curlHandle);
+    if (201 !== $httpCode) {
+        echo "Failed to create tag $tagName, code $httpCode\n";
+        exit(1);
+    }
+    echo "Release created\n";
+}
+
+$projectId = getenv('CI_PROJECT_ID');
+if (false === $projectId) {
+    echo "CI_PROJECT_ID not set. Exiting.\n";
+    exit(-1);
+}
+$privateToken = getenv('GITLAB_PRIVATE_TOKEN');
+if (false === $privateToken) {
+    echo "GITLAB_PRIVATE_TOKEN not set. Exiting.\n";
+    exit(-1);
+}
+$commitBranch = getenv('CI_COMMIT_BRANCH');
+if (false === $commitBranch) {
+    echo "CI_COMMIT_BRANCH not set. Exiting.\n";
+    exit(-1);
+}
+
+$currentDate = date("y.m.dHi");
+$tagName = "v" . $currentDate;
+echo "New tag: $tagName\n";
+
+$commitMessages = getCommitMessages();
+echo "Commit messages:\n$commitMessages\n";
+if (null === $commitMessages) {
+    echo "No commit messages found. Exiting.";
+    exit(-1);
+}
+echo "\n";
+createTag($projectId, $tagName, $commitBranch, $privateToken);
+echo "\n";
+createRelease($projectId, $privateToken, $tagName, $commitMessages);

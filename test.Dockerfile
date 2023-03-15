@@ -12,3 +12,4 @@ RUN set -xe \
 
 COPY php/assertions.ini /etc/php81/conf.d/04_assertions.ini
 COPY php/xdebug.ini /etc/php81/conf.d/50_xdebug.ini
+COPY bin/create-gitlab-release /usr/local/bin/create-gitlab-release
