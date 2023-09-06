@@ -2,5 +2,5 @@ php.docker
 ==========
 
 * Alpine
-* PHP 8.1
+* PHP 8.2
 * Apache
