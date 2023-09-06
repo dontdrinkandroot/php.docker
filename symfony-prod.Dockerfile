@@ -6,7 +6,6 @@ RUN set -xe \
     && apk --no-cache --update add \
         apache2 \
         php82-apache2 \
-        php82-pecl-apcu \
     && ln -sf /run/apache2 /etc/apache2/run \
     && ln -sf /usr/lib/apache2 /etc/apache2/modules \
     && deluser xfs \
