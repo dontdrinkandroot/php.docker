@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:3.18
 MAINTAINER Philip Washington Sorst <philip@sorst.net>
 
 ENV COMPOSER_HOME="/opt/composer"
