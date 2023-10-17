@@ -6,6 +6,7 @@ RUN set -xe \
     && apk --no-cache --update add \
         php82-pecl-xdebug \
         yarn \
+        openssh-client \
     && composer global require vimeo/psalm:^5.2 \
     && ln -sf /opt/composer/vendor/bin/psalm /usr/local/bin/psalm \
     && echo "psalm:" && psalm --version
