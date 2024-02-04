@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.19
 MAINTAINER Philip Washington Sorst <philip@sorst.net>
 
 ENV COMPOSER_HOME="/opt/composer"
@@ -9,31 +9,31 @@ RUN set -xe \
         git \
         tzdata \
         icu-data-full \
-        php82 \
-        php82-ctype \
-        php82-curl \
-        php82-dom \
-        php82-exif \
-        php82-fileinfo \
-        php82-gd \
-        php82-iconv \
-        php82-intl \
-        php82-mbstring \
-        php82-openssl \
-        php82-zip \
-        php82-opcache \
-        php82-pdo_mysql \
-        php82-pdo_pgsql \
-        php82-pdo_sqlite \
-        php82-pecl-apcu \
-        php82-phar \
-        php82-simplexml \
-        php82-sodium \
-        php82-session \
-        php82-tokenizer \
-        php82-xml \
-        php82-xmlwriter\
-    && ln -sf /usr/bin/php82 /usr/bin/php \
+        php83 \
+        php83-ctype \
+        php83-curl \
+        php83-dom \
+        php83-exif \
+        php83-fileinfo \
+        php83-gd \
+        php83-iconv \
+        php83-intl \
+        php83-mbstring \
+        php83-openssl \
+        php83-zip \
+        php83-opcache \
+        php83-pdo_mysql \
+        php83-pdo_pgsql \
+        php83-pdo_sqlite \
+        php83-pecl-apcu \
+        php83-phar \
+        php83-simplexml \
+        php83-sodium \
+        php83-session \
+        php83-tokenizer \
+        php83-xml \
+        php83-xmlwriter\
+    && ln -sf /usr/bin/php83 /usr/bin/php \
     && echo "Europe/Berlin" > /etc/timezone \
     && cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
     && apk del tzdata \
