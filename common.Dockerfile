@@ -42,3 +42,5 @@ RUN set -xe \
     && php -v \
     && composer --version \
     && php -m
+
+COPY php/memory.ini /etc/php83/conf.d/05_memory.ini
