@@ -13,4 +13,5 @@ RUN set -xe \
         openssh-client \
     && composer global require vimeo/psalm:^5.21 \
     && ln -sf /opt/composer/vendor/bin/psalm /usr/local/bin/psalm \
+    && chmod +x /usr/local/bin/create-gitlab-release \
     && echo "psalm:" && psalm --version
