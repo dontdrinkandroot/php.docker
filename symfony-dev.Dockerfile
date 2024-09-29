@@ -16,11 +16,12 @@ RUN set -xe \
     && mkdir -p /var/www/ \
     && chown www-data:www-data /var/www/
 
+COPY bin/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY apache/httpd.conf /etc/apache2/httpd.conf
 COPY apache/vhost-symfony-dev.conf /etc/apache2/conf.d/vhost.conf
-COPY php/uploads.ini /etc/php83/conf.d/05_uploads.ini
 
 WORKDIR /var/www/
 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["httpd", "-D", "FOREGROUND"]
 EXPOSE 80
