@@ -28,6 +28,7 @@ RUN set -xe \
         php83-pecl-apcu \
         php83-pcntl \
         php83-phar \
+        php83-posix \
         php83-simplexml \
         php83-sodium \
         php83-session \
