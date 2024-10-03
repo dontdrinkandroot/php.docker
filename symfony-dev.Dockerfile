@@ -8,7 +8,6 @@ RUN set -xe \
         php83-apache2 \
     && ln -sf /run/apache2 /etc/apache2/run \
     && ln -sf /usr/lib/apache2 /etc/apache2/modules \
-    && deluser xfs \
     && delgroup www-data \
     && addgroup -g 33 -S www-data \
     && adduser -u 33 -D -S www-data -G www-data \

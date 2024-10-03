@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine:3.20
 MAINTAINER Philip Washington Sorst <philip@sorst.net>
 
 ENV COMPOSER_HOME="/opt/composer"
@@ -26,6 +26,7 @@ RUN set -xe \
         php83-pdo_pgsql \
         php83-pdo_sqlite \
         php83-pecl-apcu \
+        php83-pcntl \
         php83-phar \
         php83-simplexml \
         php83-sodium \
