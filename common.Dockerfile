@@ -44,3 +44,5 @@ RUN set -xe \
     && php -v \
     && composer --version \
     && php -m
+
+COPY php/apcu.ini /etc/php83/conf.d/apcu.ini
