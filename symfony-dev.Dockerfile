@@ -5,7 +5,7 @@ MAINTAINER Philip Washington Sorst <philip@sorst.net>
 RUN set -xe \
     && apk --no-cache --update add \
         apache2 \
-        php83-apache2 \
+        php84-apache2 \
     && ln -sf /run/apache2 /etc/apache2/run \
     && ln -sf /usr/lib/apache2 /etc/apache2/modules \
     && delgroup www-data \
