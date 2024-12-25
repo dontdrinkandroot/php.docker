@@ -9,6 +9,7 @@ COPY bin/create-gitlab-release /usr/local/bin/create-gitlab-release
 RUN set -xe \
     && apk --no-cache --update add \
         php83-pecl-xdebug \
+        pnpm \
         yarn \
         openssh-client \
     && composer global require vimeo/psalm:^5.21 \
