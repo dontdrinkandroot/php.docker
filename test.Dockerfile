@@ -12,6 +12,7 @@ RUN set -xe \
         pnpm \
         yarn \
         openssh-client \
-    && composer global require vimeo/psalm:^5.21 \
+    && composer global require vimeo/psalm:^5.21 phpstan/phpstan:^2.1.2 \
     && ln -sf /opt/composer/vendor/bin/psalm /usr/local/bin/psalm \
+    && ln -sf /opt/composer/vendor/bin/phpstan /usr/local/bin/phpstan \
     && echo "psalm:" && psalm --version
