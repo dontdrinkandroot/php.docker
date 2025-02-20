@@ -12,7 +12,7 @@ RUN set -xe \
         pnpm \
         yarn \
         openssh-client \
-    && composer global config --no-plugins allow-plugins.phpstan/extension-installer true
+    && composer global config --no-plugins allow-plugins.phpstan/extension-installer true \
     && composer global require vimeo/psalm:^6.0 phpstan/phpstan:^2.1.2 phpstan/phpstan-symfony:^2.0 phpstan/phpstan-doctrine:^2.0 phpstan/extension-installer:^1.4 \
     && ln -sf /opt/composer/vendor/bin/psalm /usr/local/bin/psalm \
     && ln -sf /opt/composer/vendor/bin/phpstan /usr/local/bin/phpstan \
