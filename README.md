@@ -1,7 +1,7 @@
 php.docker
 ==========
 
-* Alpine 3.20
-* PHP 8.3
+* Alpine 3.21
+* PHP 8.4
 * Apache 2
 * Symfony ready

@@ -15,4 +15,5 @@ RUN set -xe \
     && composer global require vimeo/psalm:^6.0 phpstan/phpstan:^2.1.2 phpstan/phpstan-symfony:^2.0 phpstan/phpstan-doctrine:^2.0 phpstan/extension-installer:^1.4 \
     && ln -sf /opt/composer/vendor/bin/psalm /usr/local/bin/psalm \
     && ln -sf /opt/composer/vendor/bin/phpstan /usr/local/bin/phpstan \
-    && echo "psalm:" && psalm --version
+    && echo "psalm:" && psalm --version \
+    && echo "phpstan:" && phpstan --version
