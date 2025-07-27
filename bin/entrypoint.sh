@@ -12,7 +12,7 @@ else
     echo "upload_max_filesize = 128M" > /etc/php84/conf.d/05_upload_max_filesize.ini
 fi
 
-if [ -n "$POST_MAX_XIZE" ]; then
+if [ -n "$POST_MAX_SIZE" ]; then
     echo "post_max_size = $POST_MAX_SIZE" > /etc/php84/conf.d/05_post_max_size.ini
 else
     echo "post_max_size = 128M" > /etc/php84/conf.d/05_post_max_size.ini
