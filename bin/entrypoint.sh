@@ -18,4 +18,10 @@ else
     echo "post_max_size = 128M" > /etc/php84/conf.d/05_post_max_size.ini
 fi
 
+su -s /bin/sh www-data -c "composer dump-env prod"
+
+if [ "$RUN_MIGRATIONS" = "1" ]; then
+    su -s /bin/sh www-data -c "bin/console doctrine:migrations:migrate --all-or-nothing -n"
+fi
+
 exec "$@"
