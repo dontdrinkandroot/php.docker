@@ -1,6 +1,6 @@
 ARG FROM=""
 FROM $FROM
-MAINTAINER Philip Washington Sorst <philip@sorst.net>
+LABEL maintainer="Philip Washington Sorst <philip@sorst.net>"
 
 COPY php/assertions.ini /etc/php84/conf.d/04_assertions.ini
 COPY php/xdebug.ini /etc/php84/conf.d/50_xdebug.ini

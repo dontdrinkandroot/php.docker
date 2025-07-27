@@ -1,6 +1,6 @@
 ARG FROM=""
 FROM $FROM
-MAINTAINER Philip Washington Sorst <philip@sorst.net>
+LABEL maintainer="Philip Washington Sorst <philip@sorst.net>"
 
 RUN set -xe \
     && apk --no-cache --update add \

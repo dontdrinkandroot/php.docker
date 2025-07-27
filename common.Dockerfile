@@ -1,5 +1,5 @@
 FROM alpine:3.22
-MAINTAINER Philip Washington Sorst <philip@sorst.net>
+LABEL maintainer="Philip Washington Sorst <philip@sorst.net>"
 
 ENV COMPOSER_HOME="/opt/composer"
 
