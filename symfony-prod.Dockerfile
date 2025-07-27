@@ -19,6 +19,7 @@ RUN set -xe \
     && chown www-data:www-data /var/log/app/
 
 COPY bin/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY bin/supervisor-add-messenger-consume /usr/local/bin/supervisor-add-messenger-consume
 COPY apache/httpd.conf /etc/apache2/httpd.conf
 COPY apache/vhost-symfony-prod.conf /etc/apache2/conf.d/vhost.conf
 COPY php/symfony.ini /etc/php84/conf.d/05_symfony.ini
