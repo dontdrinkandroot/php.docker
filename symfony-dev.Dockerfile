@@ -15,7 +15,7 @@ RUN set -xe \
     && mkdir -p /var/www/ \
     && chown www-data:www-data /var/www/
 
-COPY bin/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY bin/entrypoint_dev.sh /usr/local/bin/entrypoint.sh
 COPY apache/httpd.conf /etc/apache2/httpd.conf
 COPY apache/vhost-symfony-dev.conf /etc/apache2/conf.d/vhost.conf
 

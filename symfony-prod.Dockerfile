@@ -18,7 +18,7 @@ RUN set -xe \
     && mkdir -p /var/log/app/ \
     && chown www-data:www-data /var/log/app/
 
-COPY bin/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY bin/entrypoint_prod.sh /usr/local/bin/entrypoint.sh
 COPY bin/supervisor-add-messenger-consume /usr/local/bin/supervisor-add-messenger-consume
 COPY apache/httpd.conf /etc/apache2/httpd.conf
 COPY apache/vhost-symfony-prod.conf /etc/apache2/conf.d/vhost.conf
