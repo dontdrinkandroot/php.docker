@@ -23,8 +23,8 @@ COPY bin/supervisor-add-messenger-consume /usr/local/bin/supervisor-add-messenge
 COPY apache/httpd.conf /etc/apache2/httpd.conf
 COPY apache/vhost-symfony-prod.conf /etc/apache2/conf.d/vhost.conf
 COPY php/symfony.ini /etc/php84/conf.d/05_symfony.ini
-COPY docker/supervisor/supervisord.conf /etc/supervisord.conf
-COPY docker/supervisor/programs/*.conf /etc/supervisor/conf.d/
+COPY supervisor/supervisord.conf /etc/supervisord.conf
+COPY supervisor/programs/*.conf /etc/supervisor/conf.d/
 
 #HEALTHCHECK CMD wget -q --no-cache --spider localhost
 
