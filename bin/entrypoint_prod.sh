@@ -16,9 +16,13 @@ echo "Set post_max_size to $POST_MAX_SIZE"
 echo "Dumping env for composer"
 su -s /bin/sh www-data -c "composer dump-env prod"
 
-if [ "${RUN_MIGRATIONS:-0}" = "1" ]; then
-    echo "Running database migrations"
-    su -s /bin/sh www-data -c "bin/console doctrine:migrations:migrate --all-or-nothing -n"
+if [ "${RUN_MIGRATIONS:-1}" = "1" ]; then
+    if su -s /bin/sh www-data -c "bin/console doctrine:migrations:migrate --help" > /dev/null 2>&1; then
+        echo "Running database migrations"
+        su -s /bin/sh www-data -c "bin/console doctrine:migrations:migrate --all-or-nothing -n"
+    else
+        echo "Skipping database migrations - doctrine:migrations:migrate command not available"
+    fi
 else
     echo "Skipping database migrations"
 fi
