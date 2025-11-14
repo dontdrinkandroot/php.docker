@@ -1,7 +1,48 @@
 #!/usr/bin/php
 <?php
 
-function getCommitMessages(): string|null
+function getValueFromEnv(string $envName): string|null
+{
+    $value = getenv($envName);
+    if (false === $value || is_array($value) || '' === trim($value)) {
+        $value = null;
+    }
+    return $value;
+}
+
+function getValueFromArgs(array $argv, string $argName): string|null
+{
+    foreach ($argv as $arg) {
+        if (str_starts_with($arg, $argName)) {
+            $value = substr($arg, strlen($argName) + 1);
+            return '' === trim($value) ? null : $value;
+        }
+    }
+
+    return null;
+}
+
+function getVariable(string $name, string $argName, string $envName, array $argv, ?string $default = null): string
+{
+    $value = getValueFromArgs($argv, $argName) ?? getValueFromEnv($envName) ?? $default;
+
+    if (null === $value) {
+        echo "$name not set. Either set $argName=<value> or set env var $envName.\n";
+        exit(1);
+    }
+
+    return $value;
+}
+
+/**
+ * @param string[] $commitMessages
+ */
+function convertToMarkdown(array $commitMessages): string
+{
+    return implode("\n", array_map(fn($commitMessage) => "* $commitMessage", $commitMessages));
+}
+
+function getCommitMessages(): array|null
 {
     $lastTag = trim(shell_exec("git describe --tags --abbrev=0 --match 'v*'"));
     if ('' === $lastTag) {
@@ -14,51 +55,62 @@ function getCommitMessages(): string|null
     if (false === $commitMessages) {
         return null;
     }
-    return $commitMessages;
+
+    return explode("\n", $commitMessages);
 }
 
-function createTag(string $projectId, string $tagName, string $commitBranch, string $privateToken): void
+function createTag(string $tagName, string $commitBranch, string $jobToken): void
 {
     echo "Creating Tag: $tagName\n";
-    $curlHandle = curl_init();
-    $url = "https://gitlab.com/api/v4/projects/$projectId/repository/tags?tag_name=$tagName&ref=$commitBranch";
-    curl_setopt(
-        $curlHandle,
-        CURLOPT_URL,
-        $url
-    );
-    curl_setopt($curlHandle, CURLOPT_POST, 1);
-    curl_setopt($curlHandle, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: $privateToken"]);
-    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($curlHandle);
-    $httpCode = (int)curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
-    curl_close($curlHandle);
-    if (201 !== $httpCode) {
-        echo "Failed to create tag $tagName, code $httpCode\n";
+
+    // Configure Git to use the job token for authentication
+    $ciServerHost = getenv('CI_SERVER_HOST') ?: 'gitlab.com';
+    $ciProjectPath = getenv('CI_PROJECT_PATH');
+
+    if ($ciProjectPath) {
+        $remoteUrl = "https://gitlab-ci-token:$jobToken@$ciServerHost/$ciProjectPath.git";
+        shell_exec("git remote set-url origin $remoteUrl 2>&1");
+    }
+
+    // Create the tag
+    $tagResult = shell_exec("git tag $tagName 2>&1");
+    if (false === $tagResult) {
+        echo "Failed to create tag $tagName\n";
         exit(1);
     }
-    echo "Tag created\n";
-}
 
-function createRelease(string $projectId, string $privateToken, string $tagName, string $commitMessages): void
-{
-    echo "Creating Release: $tagName\n";
-    $lines = explode("\n", $commitMessages);
-    $markdownCommitMessages = '';
-    foreach ($lines as $line) {
-        $markdownCommitMessages .= "* $line\n";
+    // Push the tag
+    echo "Pushing tag to remote...\n";
+    $pushResult = shell_exec("git push origin $tagName 2>&1");
+    if (false === $pushResult || str_contains(strtolower($pushResult), 'error')) {
+        echo "Failed to push tag $tagName\n";
+        echo "Git output: $pushResult\n";
+        exit(1);
     }
 
+    echo "Tag created and pushed successfully\n";
+}
+
+function createRelease(string $projectId, string $jobToken, string $tagName, array $commitMessages): void
+{
+    echo "Creating Release: $tagName\n";
+    $markdownCommitMessages = convertToMarkdown($commitMessages);
+
     $curlHandle = curl_init();
-    curl_setopt($curlHandle, CURLOPT_URL, "https://gitlab.com/api/v4/projects/$projectId/releases");
+
+    $url = "https://gitlab.com/api/v4/projects/$projectId/releases";
+    echo "URL: $url\n";
+    curl_setopt($curlHandle, CURLOPT_URL, $url);
     curl_setopt($curlHandle, CURLOPT_POST, 1);
-    curl_setopt($curlHandle, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: $privateToken", "Content-Type: application/json"]);
+    curl_setopt($curlHandle, CURLOPT_HTTPHEADER, ["Authorization: Bearer $jobToken", "Content-Type: application/json"]);
     curl_setopt(
         $curlHandle,
         CURLOPT_POSTFIELDS,
-        json_encode(
-            ["name" => $tagName, "tag_name" => $tagName, "description" => $markdownCommitMessages]
-        )
+        json_encode([
+            "name" => $tagName,
+            "tag_name" => $tagName,
+            "description" => $markdownCommitMessages
+        ])
     );
     curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($curlHandle);
@@ -71,33 +123,62 @@ function createRelease(string $projectId, string $privateToken, string $tagName,
     echo "Release created\n";
 }
 
-$projectId = getenv('CI_PROJECT_ID');
-if (false === $projectId) {
-    echo "CI_PROJECT_ID not set. Exiting.\n";
-    exit(-1);
+function triggerPipeline(string $projectId, string $jobToken, string $tagName): void
+{
+    echo "Triggering pipeline for tag: $tagName\n";
+
+    $curlHandle = curl_init();
+
+    $url = "https://gitlab.com/api/v4/projects/$projectId/trigger/pipeline";
+    echo "URL: $url\n";
+    curl_setopt($curlHandle, CURLOPT_URL, $url);
+    curl_setopt($curlHandle, CURLOPT_POST, 1);
+
+    curl_setopt($curlHandle, CURLOPT_HTTPHEADER, ["JOB-TOKEN: $jobToken"]);
+    curl_setopt(
+        $curlHandle,
+        CURLOPT_POSTFIELDS,
+        http_build_query([
+            "token" => $jobToken,
+            "ref" => $tagName
+        ])
+    );
+
+    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curlHandle);
+    $httpCode = (int)curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+    curl_close($curlHandle);
+
+    if (201 !== $httpCode) {
+        echo "Failed to trigger pipeline for $tagName, code $httpCode\n";
+        echo "Response: $response\n";
+        exit(1);
+    }
+    echo "Pipeline triggered successfully\n";
 }
-$privateToken = getenv('GITLAB_PRIVATE_TOKEN');
-if (false === $privateToken) {
-    echo "GITLAB_PRIVATE_TOKEN not set. Exiting.\n";
-    exit(-1);
-}
-$commitBranch = getenv('CI_COMMIT_BRANCH');
-if (false === $commitBranch) {
-    echo "CI_COMMIT_BRANCH not set. Exiting.\n";
-    exit(-1);
-}
+
+$projectId = getVariable('Project ID', '--project-id', 'CI_PROJECT_ID', $argv);
+echo "Project ID: $projectId\n";
+
+$jobToken = getVariable('Job Token', '--job-token', 'CI_JOB_TOKEN', $argv);
+
+$commitBranch = getVariable('Commit Branch', '--commit-branch', 'CI_COMMIT_BRANCH', $argv);
+echo "Commit Branch: $commitBranch\n";
 
 $currentDate = date("y.m.dHi");
 $tagName = "v" . $currentDate;
-echo "New tag: $tagName\n";
+echo "New tag: $tagName from Branch $commitBranch\n";
 
 $commitMessages = getCommitMessages();
-echo "Commit messages:\n$commitMessages\n";
+echo "Commit messages:\n";
 if (null === $commitMessages) {
     echo "No commit messages found. Exiting.";
     exit(-1);
 }
+echo convertToMarkdown($commitMessages) . "\n";
 echo "\n";
-createTag($projectId, $tagName, $commitBranch, $privateToken);
+createTag($tagName, $commitBranch, $jobToken);
 echo "\n";
-createRelease($projectId, $privateToken, $tagName, $commitMessages);
+createRelease($projectId, $jobToken, $tagName, $commitMessages);
+echo "\n";
+triggerPipeline($projectId, $jobToken, $tagName);
