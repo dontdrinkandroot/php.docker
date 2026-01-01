@@ -6,7 +6,7 @@ RUN set -xe \
     && apk --no-cache --update add \
         apache2 \
         supervisor \
-        php84-apache2 \
+        php85-apache2 \
     && ln -sf /run/apache2 /etc/apache2/run \
     && ln -sf /usr/lib/apache2 /etc/apache2/modules \
     && delgroup www-data \
@@ -18,11 +18,14 @@ RUN set -xe \
     && mkdir -p /var/log/app/ \
     && chown www-data:www-data /var/log/app/
 
-COPY bin/entrypoint_prod.sh /usr/local/bin/entrypoint.sh
+ENV DUMP_COMPOSER_ENV=1
+ENV RUN_DOCTRINE_MIGRATIONS=1
+
+COPY bin/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY bin/supervisor-add-messenger-consume /usr/local/bin/supervisor-add-messenger-consume
 COPY apache/httpd.conf /etc/apache2/httpd.conf
 COPY apache/vhost-symfony-prod.conf /etc/apache2/conf.d/vhost.conf
-COPY php/symfony.ini /etc/php84/conf.d/05_symfony.ini
+COPY php/symfony.ini /etc/php85/conf.d/05_symfony.ini
 COPY supervisor/supervisord.conf /etc/supervisord.conf
 COPY supervisor/programs/*.conf /etc/supervisor/conf.d/
 

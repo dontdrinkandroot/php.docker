@@ -2,13 +2,13 @@ ARG FROM=""
 FROM $FROM
 LABEL maintainer="Philip Washington Sorst <philip@sorst.net>"
 
-COPY php/assertions.ini /etc/php84/conf.d/04_assertions.ini
-COPY php/xdebug.ini /etc/php84/conf.d/50_xdebug.ini
+COPY php/assertions.ini /etc/php85/conf.d/04_assertions.ini
+COPY php/xdebug.ini /etc/php85/conf.d/50_xdebug.ini
 COPY bin/create-gitlab-release /usr/local/bin/create-gitlab-release
 
 RUN set -xe \
     && apk --no-cache --update add \
-        php84-pecl-xdebug \
+        php85-pecl-xdebug \
         pnpm \
         yarn \
         openssh-client \

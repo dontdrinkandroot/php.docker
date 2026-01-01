@@ -1,4 +1,4 @@
-FROM alpine:3.22
+FROM alpine:3.23
 LABEL maintainer="Philip Washington Sorst <philip@sorst.net>"
 
 ENV COMPOSER_HOME="/opt/composer"
@@ -9,33 +9,32 @@ RUN set -xe \
         git \
         tzdata \
         icu-data-full \
-        php84 \
-        php84-ctype \
-        php84-curl \
-        php84-dom \
-        php84-exif \
-        php84-fileinfo \
-        php84-gd \
-        php84-iconv \
-        php84-intl \
-        php84-mbstring \
-        php84-openssl \
-        php84-zip \
-        php84-opcache \
-        php84-pdo_mysql \
-        php84-pdo_pgsql \
-        php84-pdo_sqlite \
-        php84-pecl-apcu \
-        php84-pcntl \
-        php84-phar \
-        php84-posix \
-        php84-simplexml \
-        php84-sodium \
-        php84-session \
-        php84-tokenizer \
-        php84-xml \
-        php84-xmlwriter\
-    && ln -sf /usr/bin/php84 /usr/bin/php \
+        php85 \
+        php85-ctype \
+        php85-curl \
+        php85-dom \
+        php85-exif \
+        php85-fileinfo \
+        php85-gd \
+        php85-iconv \
+        php85-intl \
+        php85-mbstring \
+        php85-openssl \
+        php85-zip \
+        php85-pdo_mysql \
+        php85-pdo_pgsql \
+        php85-pdo_sqlite \
+        php85-pecl-apcu \
+        php85-pcntl \
+        php85-phar \
+        php85-posix \
+        php85-simplexml \
+        php85-sodium \
+        php85-session \
+        php85-tokenizer \
+        php85-xml \
+        php85-xmlwriter\
+    && ln -sf /usr/bin/php85 /usr/bin/php \
     && echo "Europe/Berlin" > /etc/timezone \
     && cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
     && apk del tzdata \
@@ -45,4 +44,4 @@ RUN set -xe \
     && composer --version \
     && php -m
 
-COPY php/apcu.ini /etc/php84/conf.d/apcu.ini
+COPY php/apcu.ini /etc/php85/conf.d/apcu.ini

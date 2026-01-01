@@ -5,7 +5,7 @@ LABEL maintainer="Philip Washington Sorst <philip@sorst.net>"
 RUN set -xe \
     && apk --no-cache --update add \
         apache2 \
-        php84-apache2 \
+        php85-apache2 \
     && ln -sf /run/apache2 /etc/apache2/run \
     && ln -sf /usr/lib/apache2 /etc/apache2/modules \
     && delgroup www-data \
@@ -15,7 +15,7 @@ RUN set -xe \
     && mkdir -p /var/www/ \
     && chown www-data:www-data /var/www/
 
-COPY bin/entrypoint_dev.sh /usr/local/bin/entrypoint.sh
+COPY bin/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY apache/httpd.conf /etc/apache2/httpd.conf
 COPY apache/vhost-symfony-dev.conf /etc/apache2/conf.d/vhost.conf
 
