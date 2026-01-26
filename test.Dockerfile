@@ -13,7 +13,7 @@ RUN set -xe \
         yarn \
         openssh-client \
     && composer global config --no-plugins allow-plugins.phpstan/extension-installer true \
-    && composer global require phpstan/phpstan:^2.1.2 phpstan/phpstan-symfony:^2.0 phpstan/phpstan-doctrine:^2.0 phpstan/phpstan-strict-rules:^2.0 phpstan/extension-installer:^1.4 \
+    && composer global require phpstan/phpstan:^2.1 phpstan/phpstan-symfony:^2.0 phpstan/phpstan-doctrine:^2.0 phpstan/phpstan-strict-rules:^2.0 phpstan/extension-installer:^1.4 \
     && composer global config --no-plugins allow-plugins.phpstan/extension-installer false \
     && ln -sf /opt/composer/vendor/bin/phpstan /usr/local/bin/phpstan \
     && echo "phpstan:" && phpstan --version

@@ -27,6 +27,12 @@ ENV Variables
 - **Usage**: Controls the maximum size of POST request data
 - **Example**: `PHP_POST_MAX_SIZE=256M`
 
+### `PHP_MAX_EXECUTION_TIME`
+- **Purpose**: Sets the maximum execution time
+- **Default**: `30` (if not specified)
+- **Usage**: Controls the maximum time in seconds a script is allowed to run before it is terminated by the parser
+- **Example**: `PHP_MAX_EXECUTION_TIME=60`
+
 ### `DUMP_COMPOSER_ENV`
 - **Purpose**: Controls whether composer environment is dumped on container startup
 - **Default**: `0` (if not specified)

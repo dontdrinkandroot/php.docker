@@ -5,6 +5,7 @@ set -e
 PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-512M}
 PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE:-128M}
 PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE:-128M}
+PHP_MAX_EXECUTION_TIME=${PHP_MAX_EXECUTION_TIME:-30}
 
 echo "memory_limit = $PHP_MEMORY_LIMIT" > /etc/php85/conf.d/05_memory_limit.ini
 echo "Set memory limit to $PHP_MEMORY_LIMIT"
@@ -12,6 +13,8 @@ echo "upload_max_filesize = $PHP_UPLOAD_MAX_FILESIZE" > /etc/php85/conf.d/05_upl
 echo "Set upload_max_filesize to $PHP_UPLOAD_MAX_FILESIZE"
 echo "post_max_size = $PHP_POST_MAX_SIZE" > /etc/php85/conf.d/05_post_max_size.ini
 echo "Set post_max_size to $PHP_POST_MAX_SIZE"
+echo "max_execution_time = $PHP_MAX_EXECUTION_TIME" > /etc/php85/conf.d/05_max_execution_time.ini
+echo "Set max_execution_time to $PHP_MAX_EXECUTION_TIME"
 
 if [ "${DUMP_COMPOSER_ENV:-0}" = "1" ]; then
     echo "Dumping env for composer"
