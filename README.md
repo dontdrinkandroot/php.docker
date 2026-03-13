@@ -1,10 +1,21 @@
 php.docker
 ==========
 
-* Alpine 3.23
-* PHP 8.5
-* Apache 2
-* Symfony LTS ready
+## Build Image
+
+- Alpine 3.23
+- PHP 8.5
+- Composer, PHPStan, Node.js (pnpm, yarn)
+
+## Symfony Images
+
+- FrankenPHP 1.12.1 (Caddy-based)
+- PHP 8.5
+
+### Variants
+
+- **dev**: Development image with Xdebug
+- **prod**: Production image with supervisor support
 
 ENV Variables
 -------------

@@ -1,7 +1,7 @@
 #!/bin/sh
 BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 
-docker push dontdrinkandroot/php:$BRANCH-common \
-&& docker push dontdrinkandroot/php:$BRANCH-test \
-&& docker push dontdrinkandroot/php:$BRANCH-symfony-dev \
-&& docker push dontdrinkandroot/php:$BRANCH-symfony-prod
+docker push dontdrinkandroot/php:build-$BRANCH \
+&& docker push dontdrinkandroot/php:symfony-base-$BRANCH \
+&& docker push dontdrinkandroot/php:symfony-dev-$BRANCH \
+&& docker push dontdrinkandroot/php:symfony-prod-$BRANCH

@@ -1,0 +1,54 @@
+{
+	# Global options
+	admin off           # Disable the admin API for security
+	auto_https off
+
+	# Background processes managed by caddy-supervisor
+	supervisor {
+		import /etc/frankenphp/supervisor.d/*.caddy
+	}
+
+	# FrankenPHP configuration
+	frankenphp {
+		worker {
+			# Use a worker for index.php to keep the application in memory for better performance
+			file /app/public/index.php
+		}
+	}
+}
+
+# HTTP server on port 80
+:80 {
+    # Set the root directory for the application
+    root * /app/public
+
+    # Enable compression
+    encode zstd br gzip
+
+    # Security headers
+    header {
+        # Prevent clickjacking
+        X-Frame-Options "SAMEORIGIN"
+        # Prevent MIME type sniffing
+        X-Content-Type-Options "nosniff"
+        # Control referrer information
+        Referrer-Policy "strict-origin-when-cross-origin"
+        # Disable FLoC/Topics API
+        ?Permissions-Policy "browsing-topics=()"
+    }
+
+    # If the requested path is not a physical file, rewrite it to index.php (Symfony Router)
+    @phpRoute {
+        not file {path}
+    }
+    rewrite @phpRoute /index.php
+
+    # Handle the front controller with PHP
+    @frontController path /index.php
+    php @frontController
+
+    # Serve static files but hide PHP source files
+    file_server {
+        hide *.php
+    }
+}
