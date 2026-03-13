@@ -40,7 +40,7 @@ RUN set -eux; \
         /data/caddy/locks; \
     touch "$PHP_INI_DIR/app.conf.d/60_docker_env.ini"; \
     chown www-data:www-data "$PHP_INI_DIR/app.conf.d/60_docker_env.ini"; \
-    chown -R www-data:www-data /config/caddy /data/caddy;
+    chown -R www-data:www-data /config/caddy /data/caddy /app;
 
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]
