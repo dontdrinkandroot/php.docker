@@ -3,7 +3,7 @@ set -e
 
 PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-512M}
 PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE:-128M}
-PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE:-128M}
+PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE:-146M}
 
 {
   echo "memory_limit = $PHP_MEMORY_LIMIT"
@@ -12,6 +12,11 @@ PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE:-128M}
 } > "$PHP_INI_DIR/app.conf.d/60_docker_env.ini"
 
 if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
+
+	if [ "${DUMP_COMPOSER_ENV:-0}" = "1" ]; then
+		echo 'Dumping env for composer'
+		composer dump-env prod
+	fi
 
 	if [ -n "${DATABASE_URL:-}" ] && [ "${RUN_DOCTRINE_MIGRATIONS:-0}" = "1" ]; then
 		echo 'Waiting for database to be ready...'
@@ -41,5 +46,7 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 
 	echo 'PHP app ready!'
 fi
+
+sync
 
 exec docker-php-entrypoint "$@"

@@ -1,6 +1,8 @@
 FROM dunglas/frankenphp:1.12.1-builder-php8.5 AS builder
 LABEL maintainer="Philip Washington Sorst <philip@sorst.net>"
 
+ENV COMPOSER_CACHE_DIR=composer-cache
+
 # Copy xcaddy in the builder image
 COPY --from=caddy:builder /usr/bin/xcaddy /usr/bin/xcaddy
 
@@ -23,13 +25,22 @@ FROM dunglas/frankenphp:1.12.1-php8.5 AS runner
 COPY --from=builder /usr/local/bin/frankenphp /usr/local/bin/frankenphp
 COPY --link --chmod=755 files/docker-entrypoint /usr/local/bin/docker-entrypoint
 
-RUN install-php-extensions \
-	pdo_sqlite \
-    pdo_pgsql \
-	gd \
-	intl \
-	zip \
-	opcache
+RUN set -eux; \
+    install-php-extensions \
+        @composer \
+        apcu \
+        gd \
+        intl \
+        opcache \
+        pdo_sqlite \
+        pdo_pgsql \
+        zip; \
+    mkdir -p "$PHP_INI_DIR/app.conf.d" \
+        /config/caddy \
+        /data/caddy/locks; \
+    touch "$PHP_INI_DIR/app.conf.d/60_docker_env.ini"; \
+    chown www-data:www-data "$PHP_INI_DIR/app.conf.d/60_docker_env.ini"; \
+    chown -R www-data:www-data /config/caddy /data/caddy;
 
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]

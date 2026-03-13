@@ -34,19 +34,19 @@ ENV Variables
 
 ### `PHP_POST_MAX_SIZE`
 - **Purpose**: Sets the maximum POST data size
-- **Default**: `128M` (if not specified)
+- **Default**: `146M` (if not specified)
 - **Usage**: Controls the maximum size of POST request data
 - **Example**: `PHP_POST_MAX_SIZE=256M`
 
 ### `DUMP_COMPOSER_ENV`
 - **Purpose**: Controls whether composer environment is dumped on container startup
-- **Default**: `0` (if not specified)
+- **Default**: `0` for dev, `1` for prod
 - **Usage**: When set to "1", runs `composer dump-env prod` command
 - **Example**: `DUMP_COMPOSER_ENV=1`
 
 ### `RUN_DOCTRINE_MIGRATIONS`
 - **Purpose**: Controls whether Doctrine database migrations are automatically executed on container startup
-- **Default**: Not run (if not specified or not set to "1")
+- **Default**: `0` for dev, `1` for prod
 - **Usage**: When set to "1", runs `doctrine:migrations:migrate --all-or-nothing -n` command
 - **Example**: `RUN_DOCTRINE_MIGRATIONS=1`
 - **Note**: Migrations are executed as the `www-data` user and use the `--all-or-nothing` flag for transaction safety
