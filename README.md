@@ -50,3 +50,7 @@ ENV Variables
 - **Usage**: When set to "1", runs `doctrine:migrations:migrate --all-or-nothing -n` command
 - **Example**: `RUN_DOCTRINE_MIGRATIONS=1`
 - **Note**: Migrations are executed as the `www-data` user and use the `--all-or-nothing` flag for transaction safety
+
+---
+
+TODO: /var/lib/php-zts/session for www-data

@@ -4,7 +4,10 @@
 
     frankenphp {
         worker /app/public/index.php {
+            watch /app/config/
             watch /app/src/
+            watch /app/templates/
+            watch /app/translations/
         }
     }
 }
