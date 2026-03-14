@@ -47,10 +47,9 @@ CONF_FILE="${SUPERVISOR_DIR}/${PROGRAM_NAME}.caddy"
 mkdir -p "$SUPERVISOR_DIR"
 
 cat > "$CONF_FILE" <<EOF
-supervise $PROGRAM_NAME {
-    command php /app/bin/console messenger:consume $RECEIVERS_FORMATTED --time-limit=$TIME_LIMIT
-    user www-data
-    working_dir /app
+php /app/bin/console messenger:consume $RECEIVERS_FORMATTED --time-limit=$TIME_LIMIT {
+    dir /app
+    restart_policy always
     redirect_stdout stdout
     redirect_stderr stderr
 }
