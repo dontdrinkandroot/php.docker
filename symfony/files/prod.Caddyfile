@@ -1,26 +1,28 @@
 {
-	# Global options
-	admin off           # Disable the admin API for security
-	auto_https off
+    # Global options
+    admin off           # Disable the admin API for security
+    auto_https off
 
-	# Background processes managed by caddy-supervisor
-	supervisor {
-		import /etc/frankenphp/supervisor.d/*.caddy
-	}
+    # Background processes managed by caddy-supervisor
+    supervisor {
+        import /etc/frankenphp/supervisor.d/*.caddy
+    }
 
-	# FrankenPHP configuration
-	frankenphp {
-		worker {
-			# Use a worker for index.php to keep the application in memory for better performance
-			file /app/public/index.php
-		}
-	}
+    # FrankenPHP configuration
+    frankenphp {
+        worker {
+            # Use a worker for index.php to keep the application in memory for better performance
+            file /app/public/index.php
+        }
+    }
 }
 
 # HTTP server on port 80
 :80 {
     # Set the root directory for the application
     root * /app/public
+
+    import /etc/frankenphp/caddy.d/*.caddy
 
     # Enable compression
     encode zstd br gzip

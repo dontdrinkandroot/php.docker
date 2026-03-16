@@ -14,5 +14,6 @@
 
 :80 {
     root * /app/public
+    import /etc/frankenphp/caddy.d/*.caddy
     php_server
 }

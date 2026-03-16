@@ -43,6 +43,7 @@ ENV COMPOSER_CACHE_DIR=composer-cache \
 # and install the project entrypoint wrapper.
 COPY --from=builder /usr/local/bin/frankenphp /usr/local/bin/frankenphp
 COPY --link --chmod=755 files/docker-entrypoint /usr/local/bin/docker-entrypoint
+COPY --link --chmod=755 files/caddy-add-spa-rewrite /usr/local/bin/caddy-add-spa-rewrite
 
 # Install required PHP extensions and prepare writable runtime directories.
 RUN set -eux; \
@@ -57,10 +58,11 @@ RUN set -eux; \
         zip; \
     mkdir -p "$PHP_INI_DIR/app.conf.d" \
         /config/caddy \
-        /data/caddy/locks; \
+        /data/caddy/locks \
+        /etc/frankenphp/caddy.d; \
     touch "$PHP_INI_DIR/app.conf.d/60_docker_env.ini"; \
     chown www-data:www-data "$PHP_INI_DIR/app.conf.d/60_docker_env.ini"; \
-    chown -R www-data:www-data /config/caddy /data/caddy /app;
+    chown -R www-data:www-data /config/caddy /data/caddy /app /etc/frankenphp/caddy.d;
 
 WORKDIR /app
 

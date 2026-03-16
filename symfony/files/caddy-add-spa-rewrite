@@ -1,0 +1,67 @@
+#!/bin/sh
+
+set -eu
+
+show_help() {
+    echo "Usage: $0 <url-base-path> <fallback-path>"
+    echo ""
+    echo "Arguments:"
+    echo "  url-base-path   URL base path for the SPA, for example /app"
+    echo "  fallback-path   Fallback target path, for example /app/index.html"
+    echo ""
+    echo "Example:"
+    echo "  $0 /app /app/index.html"
+    echo ""
+    echo "This creates a Caddy config fragment in /etc/frankenphp/caddy.d/"
+    echo "that rewrites non-existing files under the given URL base path to"
+    echo "the given fallback path."
+}
+
+if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ] || [ $# -ne 2 ]; then
+    show_help
+    exit 0
+fi
+
+URL_BASE_PATH="$1"
+FALLBACK_PATH="$2"
+CADDY_DIR="/etc/frankenphp/caddy.d"
+
+case "$URL_BASE_PATH" in
+    /*) ;;
+    *)
+        echo "Error: url base path must start with '/': $URL_BASE_PATH" >&2
+        exit 1
+        ;;
+esac
+
+case "$FALLBACK_PATH" in
+    /*) ;;
+    *)
+        echo "Error: fallback path must start with '/': $FALLBACK_PATH" >&2
+        exit 1
+        ;;
+esac
+
+if [ "$URL_BASE_PATH" = "/" ]; then
+    echo "Error: url base path '/' is not supported" >&2
+    exit 1
+fi
+
+MATCHER_NAME="spa_rewrite_$(echo "$URL_BASE_PATH" | sed 's#^/##' | tr '/' '_')"
+CONF_FILE="${CADDY_DIR}/20-${MATCHER_NAME}.caddy"
+
+mkdir -p "$CADDY_DIR"
+
+cat > "$CONF_FILE" <<EOF
+@${MATCHER_NAME} {
+    path ${URL_BASE_PATH} ${URL_BASE_PATH}/*
+    not file
+}
+
+rewrite @${MATCHER_NAME} ${FALLBACK_PATH}
+EOF
+
+echo "Caddy SPA rewrite configuration created successfully:"
+echo "  File: $CONF_FILE"
+echo "  URL base path: $URL_BASE_PATH"
+echo "  Fallback path: $FALLBACK_PATH"
