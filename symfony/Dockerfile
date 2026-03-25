@@ -1,5 +1,8 @@
+ARG FRANKENPHP_VERSION=1.12.1
+ARG PHP_VERSION=8.5
+
 # Build a custom FrankenPHP binary with additional Caddy modules.
-FROM dunglas/frankenphp:1.12.1-builder-php8.5 AS builder
+FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-builder-php${PHP_VERSION} AS builder
 LABEL org.opencontainers.image.authors="Philip Washington Sorst <philip@sorst.net>"
 
 # Keep Composer cache in a predictable location inside the image.
@@ -23,7 +26,7 @@ RUN CGO_ENABLED=1 \
         --with github.com/baldinof/caddy-supervisor
 
 # Base runtime image used by both dev and prod variants.
-FROM dunglas/frankenphp:1.12.1-php8.5 AS base
+FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-php${PHP_VERSION} AS base
 LABEL org.opencontainers.image.authors="Philip Washington Sorst <philip@sorst.net>"
 
 # PHP_INI_SCAN_DIR extends PHP's default additional ini scan directory.
@@ -54,8 +57,6 @@ RUN set -eux; \
         exif \
         gd \
         intl \
-        opcache \
-        pdo_sqlite \
         pdo_pgsql \
         zip; \
     mkdir -p "$PHP_INI_DIR/app.conf.d" \
@@ -78,8 +79,12 @@ EXPOSE 80 443 443/udp
 # - adds assertion and Xdebug config in app.conf.d
 FROM base AS dev
 
+ARG PNPM_VERSION=10.33.0
+
 ENV RUN_DOCTRINE_MIGRATIONS=0 \
-    DUMP_COMPOSER_ENV=0
+    DUMP_COMPOSER_ENV=0 \
+    PNPM_HOME=/opt/pnpm \
+    PATH="/opt/pnpm:${PATH}"
 
 RUN set -eux; \
     composer global config --no-plugins allow-plugins.phpstan/extension-installer true; \
@@ -87,6 +92,9 @@ RUN set -eux; \
     composer global config --no-plugins allow-plugins.phpstan/extension-installer false; \
     ln -sf /opt/composer/vendor/bin/phpstan /usr/local/bin/phpstan; \
     echo "phpstan:" && phpstan --version; \
+    curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION="${PNPM_VERSION}" ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -; \
+    ls -la "$PNPM_HOME"; \
+    pnpm --version; \
     mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
     install-php-extensions \
         xdebug;
