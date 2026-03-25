@@ -93,7 +93,7 @@ RUN set -eux; \
     ln -sf /opt/composer/vendor/bin/phpstan /usr/local/bin/phpstan; \
     echo "phpstan:" && phpstan --version; \
     curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION="${PNPM_VERSION}" ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -; \
-    ls -la "$PNPM_HOME"; \
+    chown -R www-data:www-data "$PNPM_HOME"; \
     pnpm --version; \
     mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
     install-php-extensions \
