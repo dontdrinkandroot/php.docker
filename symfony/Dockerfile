@@ -37,6 +37,7 @@ LABEL org.opencontainers.image.authors="Philip Washington Sorst <philip@sorst.ne
 # Without the leading ":", PHP would scan only app.conf.d and could miss
 # extension-related ini files from conf.d.
 ENV COMPOSER_CACHE_DIR=composer-cache \
+    COMPOSER_HOME=/opt/composer \
     PHP_INI_SCAN_DIR=":$PHP_INI_DIR/app.conf.d"
 
 # Replace the upstream FrankenPHP binary with the custom one
@@ -81,6 +82,11 @@ ENV RUN_DOCTRINE_MIGRATIONS=0 \
     DUMP_COMPOSER_ENV=0
 
 RUN set -eux; \
+    composer global config --no-plugins allow-plugins.phpstan/extension-installer true; \
+    composer global require phpstan/phpstan:^2.1.2 phpstan/phpstan-symfony:^2.0 phpstan/phpstan-doctrine:^2.0 phpstan/phpstan-strict-rules:^2.0 phpstan/extension-installer:^1.4; \
+    composer global config --no-plugins allow-plugins.phpstan/extension-installer false; \
+    ln -sf /opt/composer/vendor/bin/phpstan /usr/local/bin/phpstan; \
+    echo "phpstan:" && phpstan --version; \
     mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
     install-php-extensions \
         xdebug;
