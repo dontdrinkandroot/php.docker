@@ -79,22 +79,33 @@ EXPOSE 80 443 443/udp
 # - adds assertion and Xdebug config in app.conf.d
 FROM base AS dev
 
-ARG PNPM_VERSION=10.33.0
-
 ENV RUN_DOCTRINE_MIGRATIONS=0 \
     DUMP_COMPOSER_ENV=0 \
     PNPM_HOME=/opt/pnpm \
-    PATH="/opt/pnpm:${PATH}"
+    COREPACK_HOME=/opt/corepack
 
 RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends ca-certificates curl gnupg; \
+    mkdir -p /etc/apt/keyrings; \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+      | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg; \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_24.x nodistro main" \
+      > /etc/apt/sources.list.d/nodesource.list; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends nodejs; \
+    corepack enable; \
+    corepack prepare pnpm@latest-10 --activate; \
+    pnpm config set store-dir .pnpm-store; \
+    chown -R www-data:www-data $COREPACK_HOME; \
+    node --version; \
+    pnpm --version; \
+    rm -rf /var/lib/apt/lists/*; \
     composer global config --no-plugins allow-plugins.phpstan/extension-installer true; \
     composer global require phpstan/phpstan:^2.1.2 phpstan/phpstan-symfony:^2.0 phpstan/phpstan-doctrine:^2.0 phpstan/phpstan-strict-rules:^2.0 phpstan/extension-installer:^1.4; \
     composer global config --no-plugins allow-plugins.phpstan/extension-installer false; \
     ln -sf /opt/composer/vendor/bin/phpstan /usr/local/bin/phpstan; \
-    echo "phpstan:" && phpstan --version; \
-    curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION="${PNPM_VERSION}" ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -; \
-    chown -R www-data:www-data "$PNPM_HOME"; \
-    pnpm --version; \
+    phpstan --version; \
     mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
     install-php-extensions \
         xdebug;
