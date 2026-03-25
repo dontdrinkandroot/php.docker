@@ -18,6 +18,8 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 		composer dump-env prod
 	fi
 
+	bin/console cache:clear
+
 	if [ -n "${DATABASE_URL:-}" ] && [ "${RUN_DOCTRINE_MIGRATIONS:-0}" = "1" ]; then
 		echo 'Waiting for database to be ready...'
 		ATTEMPTS_LEFT_TO_REACH_DATABASE=60
