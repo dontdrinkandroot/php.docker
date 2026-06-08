@@ -4,11 +4,13 @@ set -e
 PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-512M}
 PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE:-128M}
 PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE:-146M}
+PHP_MAX_EXECUTION_TIME=${PHP_MAX_EXECUTION_TIME:-30}
 
 {
   echo "memory_limit = $PHP_MEMORY_LIMIT"
   echo "upload_max_filesize = $PHP_UPLOAD_MAX_FILESIZE"
   echo "post_max_size = $PHP_POST_MAX_SIZE"
+  echo "max_execution_time = $PHP_MAX_EXECUTION_TIME"
 } > "$PHP_INI_DIR/app.conf.d/60_docker_env.ini"
 
 if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then

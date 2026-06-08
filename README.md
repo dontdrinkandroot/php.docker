@@ -71,6 +71,10 @@ This builds all variants tagged with the current git branch name:
 - **Default**: `146M`
 - Maximum POST request data size
 
+### `PHP_MAX_EXECUTION_TIME`
+- **Default**: `30`
+- Maximum PHP script execution time in seconds
+
 ### `DUMP_COMPOSER_ENV`
 - **Default**: `0` (dev), `1` (prod)
 - When `1`, runs `composer dump-env prod` on startup
