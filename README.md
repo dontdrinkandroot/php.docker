@@ -23,7 +23,7 @@ docker build -t my-build-image -f build/Dockerfile build/
 
 ## Symfony Images
 
-FrankenPHP 1.12.1-based images for running Symfony applications with PHP 8.5.
+FrankenPHP 1.12.6-based images for running Symfony applications with PHP 8.5.
 
 ### Variants
 

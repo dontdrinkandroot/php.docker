@@ -1,4 +1,4 @@
-ARG FRANKENPHP_VERSION=1.12.4
+ARG FRANKENPHP_VERSION=1.12.6
 ARG PHP_VERSION=8.5
 
 # Build a custom FrankenPHP binary with additional Caddy modules.
