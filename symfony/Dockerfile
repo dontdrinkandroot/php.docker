@@ -65,7 +65,7 @@ RUN set -eux; \
         /etc/frankenphp/caddy.d; \
     touch "$PHP_INI_DIR/app.conf.d/60_docker_env.ini"; \
     chown www-data:www-data "$PHP_INI_DIR/app.conf.d/60_docker_env.ini"; \
-    chown -R www-data:www-data /config/caddy /data/caddy /app /etc/frankenphp/caddy.d;
+    chown -R www-data:www-data "$COMPOSER_HOME" /config/caddy /data/caddy /app /etc/frankenphp/caddy.d;
 
 WORKDIR /app
 
