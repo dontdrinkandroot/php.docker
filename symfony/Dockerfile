@@ -101,11 +101,6 @@ RUN set -eux; \
     node --version; \
     pnpm --version; \
     rm -rf /var/lib/apt/lists/*; \
-    composer global config --no-plugins allow-plugins.phpstan/extension-installer true; \
-    composer global require phpstan/phpstan:^2.1.2 phpstan/phpstan-symfony:^2.0 phpstan/phpstan-doctrine:^2.0 phpstan/phpstan-strict-rules:^2.0 phpstan/extension-installer:^1.4; \
-    composer global config --no-plugins allow-plugins.phpstan/extension-installer false; \
-    ln -sf /opt/composer/vendor/bin/phpstan /usr/local/bin/phpstan; \
-    phpstan --version; \
     mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
     install-php-extensions \
         xdebug;

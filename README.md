@@ -8,7 +8,6 @@ General-purpose PHP image based on Alpine 3.23 with PHP 8.5.
 
 **Included tools:**
 - Composer (global installation)
-- PHPStan (globally installed)
 - Node.js with pnpm and yarn
 
 **PHP Extensions:**
@@ -30,7 +29,7 @@ FrankenPHP 1.12.6-based images for running Symfony applications with PHP 8.5.
 | Variant | Description |
 |---------|-------------|
 | **base** | Core runtime without Xdebug or additional tooling |
-| **dev** | Development image with Xdebug, PHPStan, and pnpm |
+| **dev** | Development image with Xdebug and pnpm |
 | **prod** | Production image with supervisor support, security headers, and compression |
 
 ### Build
@@ -120,6 +119,5 @@ This rewrites non-existing paths under the given URL base path to the fallback p
 
 The **dev** variant includes:
 - Xdebug with IDE integration support
-- PHPStan for static analysis
 - pnpm for Node.js package management
 - Development-optimized PHP configuration
