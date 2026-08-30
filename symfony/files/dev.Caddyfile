@@ -3,7 +3,13 @@
     auto_https off
 
     frankenphp {
+        # Fixed thread count to bound memory consumption (default would be 2x the number of CPUs)
+        num_threads {$FRANKENPHP_NUM_THREADS:4}
+
         worker /app/public/index.php {
+            # Fixed worker count to bound memory consumption (default would be 2x the number of CPUs)
+            num {$FRANKENPHP_WORKER_COUNT:2}
+
             watch /app/config/
             watch /app/src/
             watch /app/templates/

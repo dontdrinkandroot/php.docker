@@ -78,7 +78,7 @@ This builds all variants tagged with the current git branch name:
 - Maximum PHP script execution time in seconds
 
 ### `FRANKENPHP_NUM_THREADS`
-- **Default**: `4` (prod)
+- **Default**: `4` (dev and prod)
 - Number of PHP threads started by FrankenPHP
 - Must be greater than `FRANKENPHP_WORKER_COUNT`
 - Lowering this value reduces memory consumption at the cost of request concurrency
@@ -136,3 +136,4 @@ The **dev** variant includes:
 - Xdebug with IDE integration support
 - pnpm for Node.js package management
 - Development-optimized PHP configuration
+- Fixed PHP thread and worker counts for predictable memory consumption (tunable via `FRANKENPHP_NUM_THREADS` and `FRANKENPHP_WORKER_COUNT`)

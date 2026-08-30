@@ -78,7 +78,7 @@ The entrypoint applies these environment variables:
 
 Startup work is only performed when the first argument is `frankenphp`, `php`, or `bin/console`. Preserve this behavior unless intentionally changing how ad hoc container commands work. The entrypoint always ends by delegating to `docker-php-entrypoint` with `exec`.
 
-The prod Caddyfile uses native Caddyfile env substitution (`{$VAR:default}`) for bounded thread/worker counts:
+The dev and prod Caddyfiles use native Caddyfile env substitution (`{$VAR:default}`) for bounded thread/worker counts:
 
 - `FRANKENPHP_NUM_THREADS` defaults to `4`.
 - `FRANKENPHP_WORKER_COUNT` defaults to `2`.
