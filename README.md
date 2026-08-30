@@ -77,6 +77,17 @@ This builds all variants tagged with the current git branch name:
 - **Default**: `30`
 - Maximum PHP script execution time in seconds
 
+### `FRANKENPHP_NUM_THREADS`
+- **Default**: `4` (prod)
+- Number of PHP threads started by FrankenPHP
+- Must be greater than `FRANKENPHP_WORKER_COUNT`
+- Lowering this value reduces memory consumption at the cost of request concurrency
+
+### `FRANKENPHP_WORKER_COUNT`
+- **Default**: `2`
+- Number of Symfony worker threads handling requests (`index.php` worker)
+- Lowering this value reduces memory consumption at the cost of request concurrency
+
 ### `DUMP_COMPOSER_ENV`
 - **Default**: `0` (dev), `1` (prod)
 - When `1`, runs `composer dump-env prod` on startup
@@ -96,6 +107,7 @@ The **prod** variant includes:
 - Security headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy)
 - Supervisor support for background workers (e.g., Symfony Messenger consumers)
 - Production-tuned PHP settings
+- Fixed PHP thread and worker counts for predictable memory consumption (tunable via `FRANKENPHP_NUM_THREADS` and `FRANKENPHP_WORKER_COUNT`)
 - `composer dump-env prod` execution on startup
 - Automatic Doctrine migrations
 

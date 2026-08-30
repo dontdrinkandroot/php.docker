@@ -10,9 +10,15 @@
 
     # FrankenPHP configuration
     frankenphp {
+        # Fixed thread count to bound memory consumption (default on 8 cores would be 16 threads)
+        num_threads {$FRANKENPHP_NUM_THREADS:4}
+
         worker {
             # Use a worker for index.php to keep the application in memory for better performance
             file /app/public/index.php
+
+            # Fixed worker count to bound memory consumption (default would be 2x the number of CPUs)
+            num {$FRANKENPHP_WORKER_COUNT:2}
         }
     }
 }

@@ -78,6 +78,15 @@ The entrypoint applies these environment variables:
 
 Startup work is only performed when the first argument is `frankenphp`, `php`, or `bin/console`. Preserve this behavior unless intentionally changing how ad hoc container commands work. The entrypoint always ends by delegating to `docker-php-entrypoint` with `exec`.
 
+The prod Caddyfile uses native Caddyfile env substitution (`{$VAR:default}`) for bounded thread/worker counts:
+
+- `FRANKENPHP_NUM_THREADS` defaults to `4`.
+- `FRANKENPHP_WORKER_COUNT` defaults to `2`.
+- Constraint: `num_threads` must be greater than the worker count or FrankenPHP fails at startup.
+- Values must be valid integers when set; without these directives FrankenPHP defaults to 2x the CPU count for both.
+
+In FrankenPHP 1.12.x the worker count sub-directive is `num` (not `count` as in older docs/versions).
+
 ## Change Guidelines
 
 - Keep Docker build contexts and `COPY` paths correct. A file added outside `build/` or `symfony/` cannot be copied by those Dockerfiles without changing the context and build workflows.
