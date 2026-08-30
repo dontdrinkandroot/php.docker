@@ -10,6 +10,9 @@ General-purpose PHP image based on Alpine 3.23 with PHP 8.5.
 - Composer (global installation)
 - Node.js with pnpm and yarn
 
+**PHP Settings:**
+- `memory_limit = 512M`
+
 **PHP Extensions:**
 apcu, ctype, curl, dom, exif, fileinfo, gd, iconv, intl, mbstring, openssl, pcntl, pdo_mysql, pdo_pgsql, pdo_sqlite, session, simplexml, sodium, tokenizer, xml, xmlwriter, zip, xdebug
 
@@ -22,7 +25,7 @@ docker build -t my-build-image -f build/Dockerfile build/
 
 ## Symfony Images
 
-FrankenPHP 1.12.6-based images for running Symfony applications with PHP 8.5.
+FrankenPHP 1.12.7-based images for running Symfony applications with PHP 8.5.
 
 ### Variants
 

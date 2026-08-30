@@ -50,5 +50,6 @@ RUN set -eux \
 
 COPY files/apcu.ini /etc/php85/conf.d/apcu.ini
 COPY files/assertions.ini /etc/php85/conf.d/04_assertions.ini
+COPY files/memory-limit.ini /etc/php85/conf.d/10_memory-limit.ini
 COPY files/xdebug.ini /etc/php85/conf.d/50_xdebug.ini
 COPY files/create-gitlab-release /usr/local/bin/create-gitlab-release

@@ -5,7 +5,7 @@
 `php.docker` builds and publishes reusable Docker images for PHP development and deployment. The repository contains two image families:
 
 - `build/`: a general-purpose PHP 8.5 build image based on Alpine Linux, with Composer, Node.js, pnpm/yarn, common PHP extensions, and Xdebug.
-- `symfony/`: FrankenPHP images for Symfony applications, based on FrankenPHP 1.12.6 and PHP 8.5.
+- `symfony/`: FrankenPHP images for Symfony applications, based on FrankenPHP 1.12.7 and PHP 8.5.
 
 There is no application source code, Composer project, JavaScript project, or automated unit-test suite in this repository. Changes primarily affect Docker build inputs, runtime shell scripts, PHP configuration, and Caddy configuration.
 
@@ -13,7 +13,7 @@ There is no application source code, Composer project, JavaScript project, or au
 
 - `README.md`: supported images, variants, environment variables, and runtime features.
 - `build/Dockerfile`: general-purpose PHP build image.
-- `build/files/`: configuration and helper files copied into the build image.
+- `build/files/`: configuration and helper files copied into the build image, including `memory-limit.ini` which hardcodes `memory_limit = 512M`.
 - `symfony/Dockerfile`: multi-stage FrankenPHP image definition.
 - `symfony/files/docker-entrypoint`: runtime wrapper that writes PHP settings, clears Symfony cache, optionally dumps Composer environment, and optionally runs Doctrine migrations before delegating to the upstream entrypoint.
 - `symfony/files/*.ini`: PHP configuration for assertions, Xdebug, and production tuning.
